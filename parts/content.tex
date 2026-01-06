@@ -1,124 +1,332 @@
 % =============================================================================
-% CS-433 Machine Learning Cheat Sheet
+% CS-433 Machine Learning Cheat Sheet - EPFL
+% Structure based on 13 lectures from Fall 2025
 % =============================================================================
 
+% #############################################################################
+% LECTURE 1: Introduction & Regression
+% #############################################################################
 \section{Linear Regression}
 
+\subsection{Univariate}
+% TODO: y = wx + b, single feature
+
+\subsection{Multivariate}
+% TODO: y = X*w, design matrix
+
+\subsection{Loss Functions}
+% MSE, MAE, Huber, Tukey
+
 \begin{defbox}
-\textbf{OLS:} Minimize $\Loss(\vec{w}) = \norm{\vec{y} - \mat{X}\vec{w}}^2$
+\textbf{MSE:} $\Loss(\vec{w}) = \frac{1}{N}\sum_{n=1}^{N}(y_n - \vec{w}\tp\vec{x}_n)^2$
 \end{defbox}
 
-\textbf{Closed-form solution:}
-\begin{impbox}
-$\vec{w}^* = (\mat{X}\tp\mat{X})^{-1}\mat{X}\tp\vec{y}$
-\end{impbox}
+\textbf{MAE:} $\Loss = \frac{1}{N}\sum_n |y_n - \hat{y}_n|$ (robust to outliers)
 
-\textbf{Gradient:} $\nabla\Loss = -2\mat{X}\tp(\vec{y} - \mat{X}\vec{w})$
+\textbf{Huber:} Combines MSE (small errors) + MAE (large errors)
 
-\subsection{Regularization}
-test
-\begin{itemize}
-    \item \textbf{Ridge (L2):} $\Loss + \lambda\norm{\vec{w}}^2$
-    \item \textbf{Lasso (L1):} $\Loss + \lambda\norm{\vec{w}}_1$
-\end{itemize}
+% #############################################################################
+% LECTURE 2: Optimization
+% #############################################################################
+\section{Optimization}
 
-% =============================================================================
-\section{Gradient Descent}
-
+\subsection{Gradient Descent}
 \begin{impbox}
 $\vec{w}_{t+1} = \vec{w}_t - \eta \nabla\Loss(\vec{w}_t)$
 \end{impbox}
 
 \subsection{Variants}
 \begin{itemize}
-    \item \textbf{Batch GD:} Full dataset per update
-    \item \textbf{SGD:} Single sample per update
+    \item \textbf{Batch GD:} All $N$ samples per update
+    \item \textbf{SGD:} 1 sample per update (noisy but fast)
     \item \textbf{Mini-batch:} $B$ samples per update
 \end{itemize}
 
-% =============================================================================
-\section{Bias-Variance Tradeoff}
+\subsection{Convergence}
+% TODO: Learning rate, convexity conditions
 
+\subsection{Momentum}
+% TODO: v_t = gamma*v_{t-1} + eta*grad
+
+\subsection{Adam}
+% TODO: Adaptive moment estimation
+
+% #############################################################################
+% LECTURE 3: Least Squares & Regularization
+% #############################################################################
+\section{Least Squares}
+
+\subsection{Closed-form (Normal Equations)}
+\begin{impbox}
+$\vec{w}^* = (\mat{X}\tp\mat{X})^{-1}\mat{X}\tp\vec{y}$
+\end{impbox}
+
+\textbf{Gradient:} $\nabla\Loss = -2\mat{X}\tp(\vec{y} - \mat{X}\vec{w})$
+
+\subsection{Maximum Likelihood}
+% TODO: MLE derivation, connection to MSE
+
+\subsection{Overfitting}
+% TODO: Train vs test error, model complexity
+
+\subsection{Ridge Regression (L2)}
 \begin{defbox}
-$\E[(\hat{f} - y)^2] = \text{Bias}^2 + \text{Variance} + \text{Noise}$
+$\Loss_{\text{ridge}} = \norm{\vec{y} - \mat{X}\vec{w}}^2 + \lambda\norm{\vec{w}}^2$
 \end{defbox}
+\begin{impbox}
+$\vec{w}^*_{\text{ridge}} = (\mat{X}\tp\mat{X} + \lambda\mat{I})^{-1}\mat{X}\tp\vec{y}$
+\end{impbox}
 
-% =============================================================================
-\section{Logistic Regression}
+\subsection{Lasso (L1)}
+$\Loss_{\text{lasso}} = \norm{\vec{y} - \mat{X}\vec{w}}^2 + \lambda\norm{\vec{w}}_1$
 
+Promotes sparsity (feature selection)
+
+% #############################################################################
+% LECTURE 4: Generalization & Model Selection
+% #############################################################################
+\section{Generalization}
+
+\subsection{Bias-Variance Decomposition}
+\begin{impbox}
+$\E[(\hat{f} - y)^2] = \text{Bias}^2 + \text{Variance} + \sigma^2$
+\end{impbox}
+
+\subsection{Cross-Validation}
+\begin{itemize}
+    \item \textbf{K-Fold:} Split into $K$ folds, rotate test set
+    \item \textbf{LOOCV:} $K = N$ (expensive but low bias)
+\end{itemize}
+
+\subsection{Hyperparameter Tuning}
+% TODO: Grid search, validation set
+
+\subsection{Train/Val/Test Split}
+% TODO: Proper evaluation protocol
+
+% #############################################################################
+% LECTURE 5: Classification
+% #############################################################################
+\section{Classification}
+
+\subsection{Logistic Regression}
 \begin{impbox}
 $P(y=1|\vec{x}) = \sigma(\vec{w}\tp\vec{x}) = \frac{1}{1 + e^{-\vec{w}\tp\vec{x}}}$
 \end{impbox}
 
-\textbf{Loss (Cross-entropy):}
-$\Loss = -\sum_n [y_n \log(\hat{y}_n) + (1-y_n)\log(1-\hat{y}_n)]$
-
-% =============================================================================
-\section{SVMs}
-
+\subsection{Cross-Entropy Loss}
 \begin{defbox}
-\textbf{Hard margin:} $\min \frac{1}{2}\norm{\vec{w}}^2$ s.t. $y_n(\vec{w}\tp\vec{x}_n + b) \geq 1$
+$\Loss = -\sum_n [y_n \log(\hat{y}_n) + (1-y_n)\log(1-\hat{y}_n)]$
 \end{defbox}
 
-\textbf{Soft margin:}
-$\min \frac{1}{2}\norm{\vec{w}}^2 + C\sum_n \xi_n$
+\subsection{Multi-class: Softmax}
+$P(y=k|\vec{x}) = \frac{e^{\vec{w}_k\tp\vec{x}}}{\sum_j e^{\vec{w}_j\tp\vec{x}}}$
 
-\textbf{Kernel trick:} $K(\vec{x}, \vec{x}') = \phi(\vec{x})\tp\phi(\vec{x}')$
+\subsection{Decision Boundary}
+% TODO: Linear separator, threshold at 0.5
 
-% =============================================================================
-\section{Neural Networks}
-
-\textbf{Forward pass:} $\vec{h} = \sigma(\mat{W}\vec{x} + \vec{b})$
-
-\textbf{Backpropagation:}
-$\pdv{\Loss}{w_{ij}} = \pdv{\Loss}{a_j} \cdot \pdv{a_j}{w_{ij}}$
-
-\subsection{Activations}
-\begin{itemize}
-    \item ReLU: $\max(0, x)$
-    \item Sigmoid: $\frac{1}{1+e^{-x}}$
-    \item Tanh: $\frac{e^x - e^{-x}}{e^x + e^{-x}}$
-\end{itemize}
-
-% =============================================================================
-\section{Dimensionality Reduction}
-
-\subsection{PCA}
-\begin{impbox}
-$\mat{X} = \mat{U}\mat{\Sigma}\mat{V}\tp$ (SVD)
-\end{impbox}
-Principal components: columns of $\mat{V}$
-
-% =============================================================================
-\section{Clustering}
-
-\subsection{K-Means}
-\begin{enumerate}
-    \item Assign points to nearest centroid
-    \item Update centroids: $\vec{\mu}_k = \frac{1}{|C_k|}\sum_{\vec{x} \in C_k} \vec{x}$
-\end{enumerate}
-
-% =============================================================================
-\section{Ensemble Methods}
-
-\subsection{Bagging}
-Train models on bootstrap samples, average predictions
-
-\subsection{Boosting}
-Sequential training, weight misclassified samples
-
-\subsection{Random Forests}
-Bagging + random feature subsets
-
-% =============================================================================
-\section{Model Selection}
-
-\textbf{Cross-validation:} Split data into $K$ folds
-
-\textbf{Metrics:}
+\subsection{Metrics}
 \begin{itemize}
     \item Accuracy: $\frac{TP + TN}{N}$
     \item Precision: $\frac{TP}{TP + FP}$
     \item Recall: $\frac{TP}{TP + FN}$
-    \item F1: $\frac{2 \cdot P \cdot R}{P + R}$
+    \item F1: $\frac{2PR}{P + R}$
+\end{itemize}
+
+% #############################################################################
+% LECTURE 6: Support Vector Machines
+% #############################################################################
+\section{SVMs}
+
+\subsection{Hard Margin}
+\begin{defbox}
+$\min_{\vec{w},b} \frac{1}{2}\norm{\vec{w}}^2$ \quad s.t. $y_n(\vec{w}\tp\vec{x}_n + b) \geq 1$
+\end{defbox}
+
+Margin width: $\frac{2}{\norm{\vec{w}}}$
+
+\subsection{Soft Margin}
+$\min \frac{1}{2}\norm{\vec{w}}^2 + C\sum_n \xi_n$ \quad s.t. $y_n(\vec{w}\tp\vec{x}_n + b) \geq 1 - \xi_n$
+
+$C$: trade-off margin vs. violations
+
+\subsection{Hinge Loss}
+$\Loss_{\text{hinge}} = \max(0, 1 - y \cdot f(x))$
+
+\subsection{Dual Formulation}
+% TODO: Lagrange multipliers, alpha
+
+% #############################################################################
+% LECTURE 7: Kernels
+% #############################################################################
+\section{Kernel Methods}
+
+\subsection{Kernel Trick}
+\begin{impbox}
+$K(\vec{x}, \vec{x}') = \phi(\vec{x})\tp\phi(\vec{x}')$
+\end{impbox}
+
+Compute inner product in high-dim space without explicit $\phi$
+
+\subsection{Common Kernels}
+\begin{itemize}
+    \item \textbf{Linear:} $K = \vec{x}\tp\vec{x}'$
+    \item \textbf{Polynomial:} $K = (\vec{x}\tp\vec{x}' + c)^d$
+    \item \textbf{RBF/Gaussian:} $K = \exp(-\gamma\norm{\vec{x}-\vec{x}'}^2)$
+\end{itemize}
+
+\subsection{Kernel Ridge Regression}
+% TODO: Dual form, kernel matrix
+
+\subsection{Representer Theorem}
+% TODO: Solution lies in span of data
+
+% #############################################################################
+% LECTURE 8: Neural Networks
+% #############################################################################
+\section{Neural Networks}
+
+\subsection{Architecture}
+\textbf{Layer:} $\vec{h}^{(l)} = \sigma(\mat{W}^{(l)}\vec{h}^{(l-1)} + \vec{b}^{(l)})$
+
+\subsection{Activations}
+\begin{itemize}
+    \item \textbf{ReLU:} $\max(0, x)$ (default choice)
+    \item \textbf{Sigmoid:} $\frac{1}{1+e^{-x}}$ (output layer, binary)
+    \item \textbf{Tanh:} $\frac{e^x - e^{-x}}{e^x + e^{-x}}$
+    \item \textbf{Softmax:} multi-class output
+\end{itemize}
+
+\subsection{Backpropagation}
+\begin{defbox}
+Chain rule: $\pdv{\Loss}{w_{ij}^{(l)}} = \pdv{\Loss}{a_j^{(l)}} \cdot \pdv{a_j^{(l)}}{w_{ij}^{(l)}}$
+\end{defbox}
+
+\subsection{Training Tips}
+% TODO: Batch norm, dropout, weight init
+
+% #############################################################################
+% LECTURE 9: Transformers
+% #############################################################################
+\section{Transformers}
+
+\subsection{Self-Attention}
+\begin{impbox}
+$\text{Attention}(Q,K,V) = \softmax\left(\frac{QK\tp}{\sqrt{d_k}}\right)V$
+\end{impbox}
+
+\subsection{Multi-Head Attention}
+% TODO: Multiple attention heads, concatenation
+
+\subsection{Architecture}
+\begin{itemize}
+    \item Positional encoding
+    \item Layer normalization
+    \item Feed-forward layers
+    \item Residual connections
+\end{itemize}
+
+\subsection{Encoder vs Decoder}
+% TODO: BERT vs GPT style
+
+% #############################################################################
+% LECTURE 10: Ethics & Fairness
+% #############################################################################
+\section{Fairness in ML}
+
+\subsection{Sources of Bias}
+% TODO: Data bias, label bias, selection bias
+
+\subsection{Fairness Definitions}
+\begin{itemize}
+    \item \textbf{Demographic parity:} $P(\hat{y}=1|A=0) = P(\hat{y}=1|A=1)$
+    \item \textbf{Equalized odds:} Equal TPR/FPR across groups
+    \item \textbf{Calibration:} $P(y=1|\hat{y}=p, A) = p$
+\end{itemize}
+
+\subsection{Fairness Through Unawareness}
+% TODO: Removing sensitive attributes (insufficient)
+
+% #############################################################################
+% LECTURE 11: EM Algorithm
+% #############################################################################
+\section{EM Algorithm}
+
+\subsection{Latent Variables}
+% TODO: Hidden/unobserved variables
+
+\subsection{E-Step}
+Compute $Q(\theta|\theta^{(t)}) = \E_{Z|X,\theta^{(t)}}[\log P(X,Z|\theta)]$
+
+\subsection{M-Step}
+$\theta^{(t+1)} = \argmax_\theta Q(\theta|\theta^{(t)})$
+
+\subsection{Gaussian Mixture Models}
+\begin{defbox}
+$P(\vec{x}) = \sum_{k=1}^{K} \pi_k \mathcal{N}(\vec{x}|\vec{\mu}_k, \mat{\Sigma}_k)$
+\end{defbox}
+
+% TODO: Responsibilities, update equations
+
+% #############################################################################
+% LECTURE 12: Text & LLMs
+% #############################################################################
+\section{Text \& LLMs}
+
+\subsection{Word Embeddings}
+% TODO: Word2Vec, co-occurrence, matrix factorization
+
+\subsection{Tokenization}
+% TODO: BPE, WordPiece, subword
+
+\subsection{Language Modeling}
+$P(w_1, \ldots, w_T) = \prod_t P(w_t | w_{<t})$
+
+\subsection{Pretraining}
+\begin{itemize}
+    \item \textbf{Autoregressive:} Next token prediction (GPT)
+    \item \textbf{Masked LM:} Fill in blanks (BERT)
+\end{itemize}
+
+\subsection{Finetuning \& RLHF}
+% TODO: Instruction tuning, reward model, PPO
+
+\subsection{In-Context Learning}
+% TODO: Zero-shot, few-shot prompting
+
+% #############################################################################
+% LECTURE 13: Self-Supervised & Genertic
+% #############################################################################
+\section{Self-Supervised Learning}
+
+\subsection{Pretext Tasks}
+\begin{itemize}
+    \item Rotation prediction
+    \item Colorization
+    \item Contrastive learning
+    \item Masked prediction
+\end{itemize}
+
+\subsection{Transfer Learning}
+Pretrain $\rightarrow$ Finetune on downstream task
+
+\subsection{Generative Models}
+% TODO: VAE, GAN basics
+
+% #############################################################################
+% USEFUL FORMULAS
+% #############################################################################
+\section{Quick Reference}
+
+\subsection{Linear Algebra}
+\begin{itemize}
+    \item $(\mat{A}\mat{B})\tp = \mat{B}\tp\mat{A}\tp$
+    \item $\nabla_{\vec{w}}(\vec{w}\tp\mat{A}\vec{w}) = 2\mat{A}\vec{w}$ (if $\mat{A}$ symmetric)
+    \item $\nabla_{\vec{w}}(\vec{a}\tp\vec{w}) = \vec{a}$
+\end{itemize}
+
+\subsection{Probability}
+\begin{itemize}
+    \item Bayes: $P(A|B) = \frac{P(B|A)P(A)}{P(B)}$
+    \item $\Var(X) = \E[X^2] - \E[X]^2$
 \end{itemize}
