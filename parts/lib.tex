@@ -1,0 +1,116 @@
+\setlength{\headsep}{0.3mm}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% Colors
+\definecolor{myblue}{HTML}{1e40af}
+\definecolor{myred}{HTML}{ff0000}
+\definecolor{myorange}{HTML}{f97316}
+\definecolor{mygreen}{HTML}{28B463}
+
+\newcommand{\blue}[1]{{\color{myblue} #1}}
+\newcommand{\red}[1]{{\color{myred} #1}}
+\newcommand{\orange}[1]{{\color{myorange} #1}}
+\newcommand{\green}[1]{{\color{mygreen} #1}}
+\newcommand{\black}[1]{{\color{black} #1}}
+\renewcommand{\gray}[1]{{\color{gray} #1}}
+
+% Probability/Statistics
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Prob}{\mathbb{P}}
+
+% Vectors/Matrices (bold notation)
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\tp}{^\top}
+
+% Common sets
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\N}{\mathbb{N}}
+
+% Loss/Cost
+\newcommand{\Loss}{\mathcal{L}}
+\newcommand{\Data}{\mathcal{D}}
+
+% ============================================================================
+% TCOLORBOX - works properly in multicols unlike mdframed
+% ============================================================================
+\tcbset{
+    boxrule=0.5pt,
+    arc=2pt,
+    left=2pt,
+    right=2pt,
+    top=1pt,
+    bottom=1pt,
+    boxsep=0pt,
+    before skip=2pt,
+    after skip=2pt,
+    breakable,
+}
+
+% Definition box (blue border)
+\newtcolorbox{defbox}{
+    colframe=myblue,
+    colback=white,
+}
+
+% Important box (blue background)
+\newtcolorbox{impbox}{
+    colframe=myblue!20,
+    colback=myblue!8,
+    boxrule=0pt,
+}
+
+% Tighter list spacing
+\setlist{
+    nosep,
+    leftmargin=*,
+    labelindent=0pt,
+    topsep=0pt,
+    partopsep=0pt,
+    parsep=0pt,
+    itemsep=0pt,
+}
+
+% wrapped line indentation
+\newcommand{\indentSpace}{0mm}
+\setlength\parindent{0pt}
+\newenvironment{myverse}{}{}
+
+\makeatletter
+
+% Space between section number and title
+\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\hspace{1.5mm}}
+
+% Section styling - compact but with proper spacing
+\renewcommand{\section}{\@startsection{section}{1}{0pt}%
+    {0.5ex plus 0.2ex minus 0.1ex}%
+    {0.25ex plus 0.1ex}%
+    {\color{myblue}\sffamily\small\bfseries}}
+
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0pt}%
+    {0.4ex plus 0.1ex minus 0.05ex}%
+    {0.15ex plus 0.05ex}%
+    {\sffamily\footnotesize\bfseries}}
+
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0pt}%
+    {0.3ex plus 0.1ex minus 0.05ex}%
+    {0.1ex plus 0.05ex}%
+    {\sffamily\footnotesize\bfseries}}
+
+\makeatother
+
+% Minted settings
+\newcommand{\mintedSpace}{2mm}
+\BeforeBeginEnvironment{minted}{
+    \vspace{-4.5mm}
+    \setmonofont{Fira Code}[Contextuals=Alternate]
+}
+\AfterEndEnvironment{minted}{\vspace{-4.5mm}}
+
+\renewcommand{\theFancyVerbLine}{\scriptsize \oldstylenums{\arabic{FancyVerbLine}}}
+
+% Font size
+\scriptsize

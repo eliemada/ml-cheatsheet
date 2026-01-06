@@ -1,0 +1,124 @@
+% =============================================================================
+% CS-433 Machine Learning Cheat Sheet
+% =============================================================================
+
+\section{Linear Regression}
+
+\begin{defbox}
+\textbf{OLS:} Minimize $\Loss(\vec{w}) = \norm{\vec{y} - \mat{X}\vec{w}}^2$
+\end{defbox}
+
+\textbf{Closed-form solution:}
+\begin{impbox}
+$\vec{w}^* = (\mat{X}\tp\mat{X})^{-1}\mat{X}\tp\vec{y}$
+\end{impbox}
+
+\textbf{Gradient:} $\nabla\Loss = -2\mat{X}\tp(\vec{y} - \mat{X}\vec{w})$
+
+\subsection{Regularization}
+test
+\begin{itemize}
+    \item \textbf{Ridge (L2):} $\Loss + \lambda\norm{\vec{w}}^2$
+    \item \textbf{Lasso (L1):} $\Loss + \lambda\norm{\vec{w}}_1$
+\end{itemize}
+
+% =============================================================================
+\section{Gradient Descent}
+
+\begin{impbox}
+$\vec{w}_{t+1} = \vec{w}_t - \eta \nabla\Loss(\vec{w}_t)$
+\end{impbox}
+
+\subsection{Variants}
+\begin{itemize}
+    \item \textbf{Batch GD:} Full dataset per update
+    \item \textbf{SGD:} Single sample per update
+    \item \textbf{Mini-batch:} $B$ samples per update
+\end{itemize}
+
+% =============================================================================
+\section{Bias-Variance Tradeoff}
+
+\begin{defbox}
+$\E[(\hat{f} - y)^2] = \text{Bias}^2 + \text{Variance} + \text{Noise}$
+\end{defbox}
+
+% =============================================================================
+\section{Logistic Regression}
+
+\begin{impbox}
+$P(y=1|\vec{x}) = \sigma(\vec{w}\tp\vec{x}) = \frac{1}{1 + e^{-\vec{w}\tp\vec{x}}}$
+\end{impbox}
+
+\textbf{Loss (Cross-entropy):}
+$\Loss = -\sum_n [y_n \log(\hat{y}_n) + (1-y_n)\log(1-\hat{y}_n)]$
+
+% =============================================================================
+\section{SVMs}
+
+\begin{defbox}
+\textbf{Hard margin:} $\min \frac{1}{2}\norm{\vec{w}}^2$ s.t. $y_n(\vec{w}\tp\vec{x}_n + b) \geq 1$
+\end{defbox}
+
+\textbf{Soft margin:}
+$\min \frac{1}{2}\norm{\vec{w}}^2 + C\sum_n \xi_n$
+
+\textbf{Kernel trick:} $K(\vec{x}, \vec{x}') = \phi(\vec{x})\tp\phi(\vec{x}')$
+
+% =============================================================================
+\section{Neural Networks}
+
+\textbf{Forward pass:} $\vec{h} = \sigma(\mat{W}\vec{x} + \vec{b})$
+
+\textbf{Backpropagation:}
+$\pdv{\Loss}{w_{ij}} = \pdv{\Loss}{a_j} \cdot \pdv{a_j}{w_{ij}}$
+
+\subsection{Activations}
+\begin{itemize}
+    \item ReLU: $\max(0, x)$
+    \item Sigmoid: $\frac{1}{1+e^{-x}}$
+    \item Tanh: $\frac{e^x - e^{-x}}{e^x + e^{-x}}$
+\end{itemize}
+
+% =============================================================================
+\section{Dimensionality Reduction}
+
+\subsection{PCA}
+\begin{impbox}
+$\mat{X} = \mat{U}\mat{\Sigma}\mat{V}\tp$ (SVD)
+\end{impbox}
+Principal components: columns of $\mat{V}$
+
+% =============================================================================
+\section{Clustering}
+
+\subsection{K-Means}
+\begin{enumerate}
+    \item Assign points to nearest centroid
+    \item Update centroids: $\vec{\mu}_k = \frac{1}{|C_k|}\sum_{\vec{x} \in C_k} \vec{x}$
+\end{enumerate}
+
+% =============================================================================
+\section{Ensemble Methods}
+
+\subsection{Bagging}
+Train models on bootstrap samples, average predictions
+
+\subsection{Boosting}
+Sequential training, weight misclassified samples
+
+\subsection{Random Forests}
+Bagging + random feature subsets
+
+% =============================================================================
+\section{Model Selection}
+
+\textbf{Cross-validation:} Split data into $K$ folds
+
+\textbf{Metrics:}
+\begin{itemize}
+    \item Accuracy: $\frac{TP + TN}{N}$
+    \item Precision: $\frac{TP}{TP + FP}$
+    \item Recall: $\frac{TP}{TP + FN}$
+    \item F1: $\frac{2 \cdot P \cdot R}{P + R}$
+\end{itemize}

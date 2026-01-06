@@ -1,0 +1,99 @@
+\documentclass[10pt, landscape, a4paper]{article}
+
+% Fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[t1]{sourcesanspro}
+\RequirePackage{silence}
+\WarningFilter{latexfont}{Some font shapes were not available, defaults substituted.}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows,fit,calc,graphs,graphs.standard}
+
+\usepackage{multicol}
+\usepackage{microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{pdfpages}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% LANGUAGE
+\usepackage[english]{babel}
+    \selectlanguage{english}
+\usepackage{enumitem}  % Enumerate improved
+
+% MATH / Others
+\usepackage{amsmath, amssymb}  % Math symbols
+\usepackage{physics}  % \norm and \abs
+\usepackage{esvect, cancel}  % Misc., vectors, strikethrough
+\usepackage{siunitx}  % Units SI
+
+% ML-specific operators (must be in preamble)
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\sigmoid}{\sigma}
+\usepackage{minted}  % Code fences ([cache=false])
+\setminted[python]{
+    fontsize=\scriptsize,
+    tabsize=4,
+    rulecolor=black,
+    xleftmargin=0mm,
+    numbersep=1mm,
+    linenos,
+    breaklines,
+}
+\usemintedstyle{pastie}
+
+% GEOMETRY
+\usepackage[
+    paper=a4paper,
+    top=3mm,
+    left=4mm,
+    bottom=1mm,
+    right=4mm,
+    headsep=0.3mm,
+    headheight=2mm,
+]{geometry}
+% \usepackage[indent]{parskip}  % Disabled - causes gaps before lists
+\setlength{\parskip}{0pt}
+\usepackage{enumitem}  % Enumerate improved
+\usepackage{scrextend}  % Indent text with addmargin environment
+\usepackage{graphicx}  % Include graphics
+\graphicspath{{ "{{latex-img/}}" }}
+\usepackage{caption}  % Caption without figures
+\usepackage[none]{hyphenat}
+\usepackage[document]{ragged2e}
+
+% HYPERLINKS
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=black,
+}
+
+\fancyhf{}
+\lhead{\tiny CS-433 Machine Learning}
+\chead{\tiny Cheat Sheet \thepage/\pageref{LastPage}}
+\rhead{\tiny Elie Bruno (eliebruno)}
+\pagestyle{fancy}
+
+\begin{document}
+
+\input{parts/lib.tex}
+
+\begin{myverse}
+    % length of vspace between paragraphs
+    % \setlength\parskip{2mm}
+    \begin{multicols*}{5}
+
+        \input{parts/content.tex}
+        
+    \end{multicols*}
+\end{myverse}
+
+\end{document}
